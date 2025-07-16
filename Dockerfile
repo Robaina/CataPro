@@ -13,17 +13,13 @@ RUN apt-get update && apt-get install -y \
 # Set python3 as the default python
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Install Python packages
-# Note: We are installing the torch version compatible with CUDA 12.1
-RUN pip install --no-cache-dir \
-    torch==2.1.0+cu121 -f https://download.pytorch.org/whl/torch_stable.html \
-    transformers \
-    numpy \
-    pandas \
-    rdkit
-
 # Set the working directory
 WORKDIR /app
+
+COPY requirements.txt .
+
+# Install Python packages
+RUN pip install --no-cache-dir -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
 
 # INSTRUCTIONS FOR BUILDING:
 # 1. Clone the CataPro repository to your local machine:
